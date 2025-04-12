@@ -192,6 +192,9 @@ class StockSimulator {
         document.getElementById('difficulty').disabled = true;
         document.getElementById('timer').classList.remove('hidden');
         
+        // 난이도 설정 업데이트
+        this.updateDifficultySettings();
+        
         // 그래프 업데이트 인터벌
         this.gameInterval = setInterval(() => {
             this.updatePrice();
@@ -200,7 +203,7 @@ class StockSimulator {
         // 시간 업데이트 인터벌
         this.timeInterval = setInterval(() => {
             this.updateTimer();
-        }, this.timeInterval);
+        }, 1000); // 항상 1초 간격으로 시간 업데이트
     }
 
     resetGame() {
