@@ -349,7 +349,7 @@ button:disabled {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -360,41 +360,47 @@ button:disabled {
     background: white;
     padding: 2rem;
     border-radius: 8px;
+    max-width: 800px;
     width: 90%;
-    max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
 }
 
-.record-management h2 {
+.record-controls {
+    display: flex;
+    gap: 1rem;
     margin-bottom: 1rem;
-    text-align: center;
+}
+
+.record-controls button {
+    padding: 0.5rem 1rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.record-controls button:hover {
+    background: #2980b9;
 }
 
 .record-list {
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 }
 
 .record-item {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
-    padding: 0.5rem;
-    border-bottom: 1px solid #eee;
-    align-items: center;
-}
-
-.record-item:last-child {
-    border-bottom: none;
-}
-
-.record-actions {
     display: flex;
-    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
 }
 
-.delete-record {
-    padding: 0.3rem 0.5rem;
+.record-actions button {
+    padding: 0.5rem 1rem;
     background: #e74c3c;
     color: white;
     border: none;
@@ -402,17 +408,23 @@ button:disabled {
     cursor: pointer;
 }
 
-.add-record-form {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #eee;
+.record-actions button:hover {
+    background: #c0392b;
 }
 
-.add-record-form input {
+.add-record-form {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.add-record-form input,
+.add-record-form select {
     width: 100%;
     padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid #ccc;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
     border-radius: 4px;
 }
 
@@ -424,6 +436,7 @@ button:disabled {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-top: 0.5rem;
 }
 
 .add-record-form button:hover {
