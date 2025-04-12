@@ -129,11 +129,21 @@ button {
 }
 
 .price-up {
-    color: #f44336;
+    color: #e74c3c;
+    font-weight: bold;
+    animation: pulse 1s;
 }
 
 .price-down {
-    color: #4CAF50;
+    color: #2ecc71;
+    font-weight: bold;
+    animation: pulse 1s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .game-controls {
@@ -150,9 +160,14 @@ button {
 }
 
 #timer {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #e74c3c;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.7; }
 }
 
 .tutorial {
@@ -308,10 +323,12 @@ button:disabled {
 
 #profit-rate.positive {
     color: #2ecc71;
+    font-weight: bold;
 }
 
 #profit-rate.negative {
     color: #e74c3c;
+    font-weight: bold;
 }
 
 .leaderboard-controls {
@@ -456,11 +473,17 @@ button:disabled {
     margin-bottom: 0.5rem;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .item.used {
-    opacity: 0.5;
-    background: #f0f0f0;
+    opacity: 0.7;
+    background: #f8f9fa;
 }
 
 .item h3 {
@@ -499,15 +522,233 @@ button:disabled {
 }
 
 .event-message {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
+    padding: 0.8rem;
+    margin-bottom: 0.8rem;
     background: white;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 모바일 환경을 위한 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    header {
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+
+    .game-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .difficulty-selector {
+        width: 100%;
+    }
+
+    .difficulty-selector select {
+        width: 100%;
+    }
+
+    .account-info {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 0.9em;
+    }
+
+    .account-info p {
+        margin: 0;
+    }
+
+    main {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .chart-container {
+        padding: 10px;
+        height: 250px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .trading-panel {
+        padding: 15px;
+    }
+
+    .stock-info, .trading-form, .portfolio, .items-section, .event-log {
+        margin-bottom: 15px;
+    }
+
+    .trading-form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .trading-form .buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .trading-form button {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .record-management-content {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .record-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .record-actions {
+        width: 100%;
+    }
+
+    .record-actions button {
+        width: 100%;
+    }
+
+    .add-record-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-record-form input,
+    .add-record-form select {
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .leaderboard {
+        margin-top: 1rem;
+        padding: 0.5rem;
+    }
+
+    .leaderboard-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .leaderboard-controls input,
+    .leaderboard-controls button {
+        width: 100%;
+    }
+
+    .ranking-item {
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+    }
+
+    .difficulty-badge {
+        font-size: 0.8em;
+        padding: 2px 5px;
+    }
+
+    .time {
+        font-size: 0.8em;
+    }
+
+    .item {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .item button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .event-message {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    button, input, select {
+        font-size: 14px;
+    }
+
+    .trading-form input[type="number"] {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .buttons button {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .item button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .record-controls button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .add-record-form input,
+    .add-record-form select,
+    .add-record-form button {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .modal-content button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .leaderboard-controls input,
+    .leaderboard-controls button {
+        padding: 6px;
+        font-size: 14px;
+    }
+}
+
+/* 태블릿 환경을 위한 반응형 디자인 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .chart-container {
+        height: 300px;
+    }
+
+    .trading-panel {
+        padding: 1rem;
+    }
 } 
