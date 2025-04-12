@@ -469,6 +469,11 @@ class StockSimulator {
         modal.innerHTML = `
             <div class="record-management-content">
                 <h2>기록 관리</h2>
+                <div class="record-controls">
+                    <button id="export-records">기록 내보내기</button>
+                    <button id="import-records">기록 가져오기</button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </div>
                 <div class="record-list">
                     ${this.leaderboard.map((record, index) => `
                         <div class="record-item">
@@ -477,7 +482,7 @@ class StockSimulator {
                                 <br>
                                 ${this.formatNumber(record.score)}원 (${record.profitRate}%)
                                 <br>
-                                난이도: ${record.difficulty === 'easy' ? '쉬움' : record.difficulty === 'normal' ? '보통' : '어려움'}
+                                난이도: ${record.difficulty === 'easy' ? '쉬움' : '어려움'}
                                 <br>
                                 시간: ${new Date(record.time).toLocaleString()}
                             </div>
@@ -494,7 +499,6 @@ class StockSimulator {
                     <input type="text" id="new-record-profit" placeholder="수익률 (%)" maxlength="20">
                     <select id="new-record-difficulty">
                         <option value="easy">쉬움</option>
-                        <option value="normal">보통</option>
                         <option value="hard">어려움</option>
                     </select>
                     <button id="add-record">추가</button>
@@ -503,6 +507,51 @@ class StockSimulator {
         `;
 
         document.body.appendChild(modal);
+
+        // 내보내기 버튼 이벤트
+        modal.querySelector('#export-records').addEventListener('click', () => {
+            const data = JSON.stringify(this.leaderboard, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `주식게임_기록_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // 가져오기 버튼 이벤트
+        modal.querySelector('#import-records').addEventListener('click', () => {
+            const fileInput = modal.querySelector('#import-file');
+            fileInput.click();
+        });
+
+        // 파일 선택 이벤트
+        modal.querySelector('#import-file').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const importedRecords = JSON.parse(event.target.result);
+                        if (Array.isArray(importedRecords)) {
+                            this.leaderboard = importedRecords;
+                            this.saveLeaderboard();
+                            this.updateLeaderboard();
+                            alert('기록이 성공적으로 가져와졌습니다!');
+                            this.showRecordManagement();
+                        } else {
+                            alert('잘못된 형식의 파일입니다!');
+                        }
+                    } catch (error) {
+                        alert('파일을 읽는 중 오류가 발생했습니다!');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
 
         // 삭제 버튼 이벤트
         modal.querySelectorAll('.delete-record').forEach(button => {
