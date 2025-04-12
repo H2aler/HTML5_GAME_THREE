@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주식 시뮬레이션</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="tutorial" class="tutorial hidden">
+        <div class="tutorial-content">
+            <h2>게임 방법</h2>
+            <p>1. 제한 시간 내에 최대한 많은 수익을 내세요!</p>
+            <p>2. 매수/매도 버튼으로 거래할 수 있습니다.</p>
+            <p>3. 차트를 잘 관찰하여 매매 타이밍을 잡으세요.</p>
+            <button id="tutorial-close">시작하기</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>주식 시뮬레이션</h1>
+            <div class="game-controls">
+                <div class="difficulty-selector">
+                    <label for="difficulty">난이도:</label>
+                    <select id="difficulty">
+                        <option value="easy">쉬움</option>
+                        <option value="hard">어려움</option>
+                    </select>
+                </div>
+                <button id="start-btn">게임 시작</button>
+                <span id="timer" class="hidden">05:00</span>
+            </div>
+            <div class="account-info">
+                <p>보유 현금: <span id="cash">1,000,000</span>원</p>
+                <p>총 자산: <span id="total-assets">1,000,000</span>원</p>
+                <p>수익률: <span id="profit-rate">0.00</span>%</p>
+            </div>
+        </header>
+        
+        <main>
+            <div class="chart-container">
+                <canvas id="stockChart"></canvas>
+            </div>
+            
+            <div class="trading-panel">
+                <div class="stock-info">
+                    <h2>주식 정보</h2>
+                    <p>현재가: <span id="current-price">0</span>원</p>
+                    <p>변동률: <span id="price-change">0</span>%</p>
+                </div>
+                
+                <div class="trading-form">
+                    <h2>매매</h2>
+                    <div class="form-group">
+                        <label for="quantity">수량:</label>
+                        <input type="number" id="quantity" min="1" value="1">
+                    </div>
+                    <div class="buttons">
+                        <button id="buy-btn" disabled>매수</button>
+                        <button id="sell-btn" disabled>매도</button>
+                    </div>
+                </div>
+                
+                <div class="portfolio">
+                    <h2>보유 주식</h2>
+                    <div id="holdings"></div>
+                </div>
+
+                <div class="items-section">
+                    <h2>특별 아이템</h2>
+                    <div id="items-container"></div>
+                </div>
+
+                <div class="event-log">
+                    <h2>이벤트 로그</h2>
+                    <div id="event-log"></div>
+                </div>
+            </div>
+        </main>
+
+        <div id="leaderboard" class="leaderboard hidden">
+            <h2>최고 기록</h2>
+            <div class="leaderboard-controls">
+                <input type="text" id="admin-password" placeholder="관리자 비밀번호" maxlength="20">
+                <button id="manage-records">기록 관리</button>
+            </div>
+            <div id="rankings"></div>
+        </div>
+
+        <div id="game-over" class="modal hidden">
+            <div class="modal-content">
+                <h2>게임 종료!</h2>
+                <p>최종 자산: <span id="final-assets">0</span>원</p>
+                <p>수익률: <span id="final-profit-rate">0</span>%</p>
+                <input type="text" id="player-name" placeholder="이름을 입력하세요" maxlength="10">
+                <button id="save-score">기록 저장</button>
+                <button id="restart-btn">다시 시작</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
