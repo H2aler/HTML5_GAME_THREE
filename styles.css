@@ -40,7 +40,7 @@ header h1 {
 
 main {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1.5fr 1fr;
     gap: 20px;
     flex: 1;
 }
@@ -50,9 +50,28 @@ main {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    height: 400px;
+    height: 350px;
     display: flex;
     flex-direction: column;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.chart-container::after {
+    content: '→';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: rgba(0, 0, 0, 0.5);
+    animation: arrowBlink 1s infinite;
+}
+
+@keyframes arrowBlink {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .chart-container canvas {
@@ -65,7 +84,7 @@ main {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    height: 400px;
+    height: 350px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -166,9 +185,18 @@ button {
 
 .holding-item {
     display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    margin: 5px 0;
+}
+
+.holding-item span {
+    font-size: 0.95em;
+    color: #333;
 }
 
 .price-up {
@@ -232,16 +260,80 @@ button {
     border-radius: 8px;
     max-width: 500px;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tutorial-steps {
+    margin: 1.5rem 0;
+    text-align: left;
+}
+
+.tutorial-step {
+    background: #f8f9fa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    position: relative;
+    padding-left: 3rem;
+    border-left: 4px solid #3498db;
+}
+
+.tutorial-step .step-number {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: #3498db;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.tutorial-step p {
+    margin: 0 0 0.5rem 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.tutorial-step small {
+    display: block;
+    color: #666;
+    margin-left: 1rem;
+    position: relative;
+}
+
+.tutorial-step small:before {
+    content: '';
+    position: absolute;
+    left: -0.8rem;
+    top: 0.5rem;
+    width: 4px;
+    height: 4px;
+    background: #3498db;
+    border-radius: 50%;
 }
 
 .tutorial-content button {
     margin-top: 1rem;
-    padding: 0.5rem 2rem;
+    padding: 0.8rem 2.5rem;
     background: #2ecc71;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+.tutorial-content button:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .modal {
@@ -504,31 +596,40 @@ button:disabled {
 }
 
 .item {
-    background: white;
-    padding: 10px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
     margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.item.active {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+    animation: pulse 2s infinite;
 }
 
 .item h3 {
-    margin: 0 0 5px 0;
+    margin: 0 0 10px 0;
     color: #333;
 }
 
 .item p {
-    margin: 0 0 5px 0;
+    margin: 5px 0;
     color: #666;
 }
 
 .item button {
     width: 100%;
     padding: 8px;
-    background: #3498db;
-    color: white;
+    margin-top: 10px;
     border: none;
     border-radius: 4px;
+    background: #4CAF50;
+    color: white;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .item button:disabled {
@@ -536,42 +637,87 @@ button:disabled {
     cursor: not-allowed;
 }
 
-.event-message {
-    padding: 8px;
-    margin-bottom: 5px;
-    background: white;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    animation: slideIn 0.3s ease-out;
+.item button:hover:not(:disabled) {
+    background: #45a049;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.item.used:not(.active) {
+    opacity: 0.7;
+    background: #eee;
 }
 
-/* 모바일 환경을 위한 반응형 디자인 */
+.item-status {
+    color: #e67e22 !important;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.effect-text {
+    color: #2980b9 !important;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.double-profit-badge {
+    background: #FF4500;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: 10px;
+    animation: bounce 1s infinite;
+}
+
+/* 아이템 효과 애니메이션 */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* 현재가 효과 스타일 */
+#current-price {
+    transition: all 0.3s ease;
+}
+
+#current-price.fixed {
+    color: #FFD700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+#current-price.double-profit {
+    color: #FF4500;
+    text-shadow: 0 0 5px rgba(255, 69, 0, 0.3);
+}
+
+/* 아이템 컨테이너 스타일 */
+#items-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* 모바일 환경 대응 */
 @media (max-width: 768px) {
     .container {
         padding: 10px;
-        max-width: 100%;
     }
 
     header {
         padding: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .game-controls {
         flex-direction: column;
+        align-items: stretch;
         gap: 0.5rem;
-        margin-bottom: 0.5rem;
     }
 
     .difficulty-selector {
@@ -584,8 +730,7 @@ button:disabled {
 
     .account-info {
         flex-direction: column;
-        gap: 5px;
-        font-size: 0.9em;
+        gap: 10px;
     }
 
     .account-info p {
@@ -594,23 +739,26 @@ button:disabled {
 
     main {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 15px;
     }
 
     .chart-container {
-        padding: 10px;
         height: 250px;
-        width: 100%;
-        overflow: hidden;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .chart-container::after {
+        font-size: 20px;
+        right: 5px;
     }
 
     .chart-container canvas {
-        width: 100% !important;
-        height: 100% !important;
+        height: 230px !important;
     }
 
     .trading-panel {
-        padding: 15px;
+        height: auto;
     }
 
     .stock-info, .trading-form, .portfolio, .items-section, .event-log {
@@ -696,8 +844,8 @@ button:disabled {
     }
 
     .item {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 12px;
+        margin-bottom: 8px;
     }
 
     .item button {
@@ -751,6 +899,41 @@ button:disabled {
         padding: 6px;
         font-size: 14px;
     }
+
+    .tutorial-content {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: calc(100% - 2rem);
+    }
+
+    .tutorial-step {
+        padding: 0.8rem;
+        padding-left: 2.5rem;
+    }
+
+    .tutorial-step .step-number {
+        left: 0.8rem;
+        width: 20px;
+        height: 20px;
+        font-size: 0.9em;
+    }
+
+    .tutorial-step p {
+        font-size: 0.95em;
+    }
+
+    .tutorial-step small {
+        font-size: 0.85em;
+    }
+
+    #items-container {
+        grid-template-columns: 1fr;
+    }
+
+    .double-profit-badge {
+        font-size: 0.7em;
+        padding: 2px 6px;
+    }
 }
 
 /* 태블릿 환경을 위한 반응형 디자인 */
@@ -765,5 +948,308 @@ button:disabled {
 
     .trading-panel {
         height: 350px;
+    }
+}
+
+/* 아이템 사용 중 상태 표시 */
+.item.active::before {
+    content: '✨';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.2em;
+}
+
+/* 이벤트 로그 메시지 스타일 */
+.event-message {
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 4px;
+    background: #f8f9fa;
+    border-left: 4px solid #4CAF50;
+    animation: slideIn 0.3s ease;
+}
+
+.event-message.item-effect {
+    border-left-color: #e67e22;
+    background: rgba(230, 126, 34, 0.1);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 아이템 남은 시간 게이지 */
+.item.active .time-gauge {
+    width: 100%;
+    height: 3px;
+    background: #eee;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.item.active .time-gauge-fill {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 1s linear;
+}
+
+/* 툴팁 스타일 */
+.item .tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.item .tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+.side-panel {
+    display: none; /* 사이드 패널 숨김 */
+}
+
+.features-modal {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 1000;
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+}
+
+.features-modal.show {
+    top: 0;
+}
+
+.features-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.features-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 30px;
+}
+
+.features-header h2 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.features-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.feature-section {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.feature-section h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.special-events {
+    display: grid;
+    gap: 15px;
+}
+
+.event-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    border-left: 4px solid #4CAF50;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateX(5px);
+}
+
+.event-card h4 {
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.event-card p {
+    color: #666;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.achievement-item, .quest-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.achievement-item.achieved {
+    background: #e8f5e9;
+    border-left: 4px solid #4caf50;
+}
+
+.quest-item {
+    position: relative;
+}
+
+.quest-progress {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin-top: 8px;
+}
+
+.quest-progress-bar {
+    height: 100%;
+    background: #2196f3;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.achievement-notification, .quest-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 15px 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.5s ease-out;
+    z-index: 1000;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.achievement-notification h3, .quest-notification h3 {
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.achievement-notification p, .quest-notification p {
+    color: #666;
+    margin: 0;
+}
+
+.features-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #4CAF50;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.features-toggle:hover {
+    transform: scale(1.1);
+    background: #45a049;
+}
+
+.features-toggle.active {
+    background: #e74c3c;
+}
+
+.features-toggle.active:hover {
+    background: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .features-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .features-content {
+        padding: 15px;
+    }
+
+    .features-body {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .feature-section {
+        padding: 15px;
     }
 } 
